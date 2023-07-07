@@ -1,0 +1,22 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block content %}
+<div class="fulln" >
+    <h1>Delete post?</h1>
+        <a href="../#"><button class="btn btn btn-primary">Back</button></a>
+
+</div>
+<br>
+<br>
+<br>
+    <hr>
+    <form action="" method="post" style="text-align: center; position: absolute; left: 8%;">
+        {% csrf_token %}
+        <p>Delete "{{ post.title|censor }}"?</p>
+        <input type="submit" class="btn btn-danger" value="Delete" />
+    </form>
+</div>
+
+{% endblock content %}

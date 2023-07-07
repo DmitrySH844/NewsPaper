@@ -1,0 +1,26 @@
+{% extends 'flatpages/default.html' %}
+{% load custom_filters %}
+
+{% block title %}
+    {{title}}
+{% endblock title %}
+
+{% block content %}
+   <h1>{{title}}</h1>
+   <form action="" method="get">
+       {{ filterset.form.as_p }}
+       <input type="submit" value="Search" />
+   </form>
+{% if posts %}
+       <br><h5>Found <i>{{ quantity }}</i> post:</h5><br>
+       {% for post in posts %}
+          <h5><a href="{% url 'post_dtl' pk=post.pk %}">{{ post.title|censor }}</a></h5>
+          <a>{{ post.text |truncatechars:128|censor }}</a><br>
+          <a>{{ post.time|date:'d. m. Y г.' }}</a>
+          <hr>
+       {% endfor %}
+   {% else %}
+       <h3>There is no post!</h3>
+{% endif %}
+
+{% endblock content %}

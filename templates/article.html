@@ -1,0 +1,30 @@
+{% extends 'flatpages/default.html' %}
+
+{% load custom_filters %}
+
+{% block title %}
+Article
+{% endblock title %}
+
+
+
+{% block content %}
+  <h1>Article:</h1>
+  <hr>
+  <hr>
+
+{% if post %}
+<h1>{{post.title|censor}}</h1>
+<p>{{post.text|censor}}</p>
+<hr>
+<h4>Author</h4>
+<p>{{post.author}}</p>
+<p>Publishing time: {{post.creation_datetime|date:"j.F.Y" }}</p>
+<hr>
+<h4>Raiting:</h4>
+<p>{{post.rating}}</p>
+{% else %}
+<h2>The end</h2>
+{% endif %}
+
+{% endblock content %}
