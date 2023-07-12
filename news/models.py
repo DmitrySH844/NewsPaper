@@ -81,9 +81,6 @@ class Post(models.Model):
         if len(self.text) > 124:
             content += '...'
         return content
-    
-     def get_absolute_url(self):
-        return reverse('post_dtl', args=[str(self.id)])
 
     def get_absolute_url(self):
         return reverse('post_dtl', args=[str(self.pk)])

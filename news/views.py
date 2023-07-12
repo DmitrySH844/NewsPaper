@@ -30,7 +30,6 @@ class PostDetail(DetailView):
     model = Post
     template_name = 'article.html'
     context_object_name = 'post'
-<<<<<<< HEAD
     pk_url_kwarg = "pk"
 
 class PostSearch(ListView):
@@ -65,6 +64,5 @@ class PostDelete(DeleteView):
     model = Post
     template_name = 'post_delete.html'
     success_url = reverse_lazy('posts_lst')
-=======
-    pk_url_kwarg = "id"
->>>>>>> 38b278149551e42a18b4f44b3dcd7ac5364e08b9
+    pk_url_kwarg = "pk"
+
