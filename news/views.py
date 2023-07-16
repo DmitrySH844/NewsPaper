@@ -4,6 +4,8 @@ from .filters import PostFilter
 from django.urls import reverse_lazy
 from .forms import PostForm
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.contrib.auth.models import Group
+from django.contrib.auth.decorators import login_required
 
 class HomePageView(RedirectView):
     url = 'posts/'
@@ -49,14 +51,14 @@ class PostSearch(ListView):
         context['filterset'] = self.filterset
         return context
 
-class PostCreate(CreateView, PermissionRequiredMixin):
+class PostCreate(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
     permission_required = 'posts.add_post'
     form_class = PostForm
     model = Post
     template_name = 'creation.html'
     success_url = reverse_lazy('posts_lst')
 
-class PostUpdate(UpdateView, PermissionRequiredMixin):
+class PostUpdate(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
     permission_required = 'posts.edit_post'
     form_class = PostForm
     model = Post
