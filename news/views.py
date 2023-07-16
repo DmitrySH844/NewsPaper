@@ -51,14 +51,14 @@ class PostSearch(ListView):
         context['filterset'] = self.filterset
         return context
 
-class PostCreate(CreateView, LoginRequiredMixin, PermissionRequiredMixin):
+class PostCreate(LoginRequiredMixin, PermissionRequiredMixin, CreateView):
     permission_required = 'news.add_post'
     form_class = PostForm
     model = Post
     template_name = 'creation.html'
     success_url = reverse_lazy('posts_lst')
 
-class PostUpdate(UpdateView, LoginRequiredMixin, PermissionRequiredMixin):
+class PostUpdate(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
     permission_required = 'news.change_post'
     form_class = PostForm
     model = Post
