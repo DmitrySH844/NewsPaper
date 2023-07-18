@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'appointment',
+    'appointments',
     'news',
     'accounts',
     'django.contrib.sites',
@@ -175,7 +175,9 @@ EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_SSL = True
 
 ADMINS = [
-    ('Dmitry', 'dmitry.sh8@gmail.com'),
+    ('Dmitry', 'dmitry.sh84@gmail.com'),
     # список всех админов в формате ('имя', 'их почта')
 ]
 SERVER_EMAIL = 'peterbadson@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
+
+DEFAULT_FROM_EMAIL = 'peterbadson@yandex.ru'
