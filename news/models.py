@@ -106,7 +106,21 @@ class Comment(models.Model):
         self.rating -= 1
         self.save()
 
+class Subscribers(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, )
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, )
 
-from django.db import models
+
+class Appointment(models.Model):
+    date = models.DateField(
+        default=datetime.utcnow,
+    )
+    client_name = models.CharField(
+        max_length=200
+    )
+    message = models.TextField()
+
+    def __str__(self):
+        return f'{self.client_name}: {self.message}'
 
 # Create your models here.
