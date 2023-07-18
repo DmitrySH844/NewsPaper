@@ -31,7 +31,7 @@ class AppointmentView(View):
         msg = EmailMultiAlternatives(
             subject=f'{appointment.client_name} {appointment.date.strftime("%Y-%M-%d")}',
             body=appointment.message,  # это то же, что и message
-            from_email='peterbadson@yandex.ru',
+            from_email='iron-cat@mail.ru',
             to=['dmitry.sh84@gmail.com'],  # это то же, что и recipients_list
         )
         msg.attach_alternative(html_content, "text/html")  # добавляем html

@@ -168,16 +168,16 @@ ACCOUNT_EMAIL_VERIFICATION = 'none'
 
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
-EMAIL_HOST = 'smtp.yandex.ru'
+EMAIL_HOST = 'smtp.mail.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = ''
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'iron-cat@mail.ru'
+EMAIL_HOST_PASSWORD = '6mWfbkJqgtRm7mHNqRjW'
 EMAIL_USE_SSL = True
 
 ADMINS = [
     ('Dmitry', 'dmitry.sh84@gmail.com'),
     # список всех админов в формате ('имя', 'их почта')
 ]
-SERVER_EMAIL = 'peterbadson@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
+SERVER_EMAIL = 'iron-cat@mail.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
 
-DEFAULT_FROM_EMAIL = 'peterbadson@yandex.ru'
+DEFAULT_FROM_EMAIL = 'iron-cat@mail.ru'
