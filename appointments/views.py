@@ -23,7 +23,7 @@ class AppointmentView(View):
         html_content = render_to_string(
             'appointment_created.html',
             {
-                'appointment': appointment,
+                'appointments': appointment,
             }
         )
 
@@ -38,6 +38,9 @@ class AppointmentView(View):
         msg.send()  # отсылаем
 
         return redirect('appointments:make_appointment')
+
+
+
 
 
 

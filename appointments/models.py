@@ -13,6 +13,7 @@ class Appointment(models.Model):
 
     def __str__(self):
         return f'{self.client_name}: {self.message}'
+
 from django.db import models
 
 # Create your models here.

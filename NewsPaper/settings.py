@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     # ... include the providers you want to enable:
     'allauth.socialaccount.providers.google',
+    'appointments.apps.AppointmentsConfig',
 ]
 
 DEFAULT_FROM_EMAIL = ''
@@ -162,22 +163,20 @@ LOGIN_REDIRECT_URL = '/'
 
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_USERNAME_REQUIRED = False
+ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
-ACCOUNT_EMAIL_VERIFICATION = 'none'
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 
 ACCOUNT_FORMS = {'signup': 'sign.models.BasicSignupForm'}
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.yandex.ru'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'ivan0v.dmitro'
-EMAIL_HOST_PASSWORD = 'Dimas_123321'
+EMAIL_HOST_USER = 'ivan0v.dmitro@yandex.ru'
+EMAIL_HOST_PASSWORD = 'bztabxrqjxyzefcl'
 EMAIL_USE_SSL = True
 
-ADMINS = [
-    ('Dmitry', 'dmitry.sh84@gmail.com'),
-    # список всех админов в формате ('имя', 'их почта')
-]
-SERVER_EMAIL = 'ivan0v.dmitro@yandex.ru'  # это будет у нас вместо аргумента FROM в массовой рассылке
 
-DEFAULT_FROM_EMAIL = 'ivan0v.dmitro@yandex.ru'
+DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = EMAIL_HOST_USER
+EMAIL_ADMIN = EMAIL_HOST_USER
