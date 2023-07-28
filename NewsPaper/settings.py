@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
-    'news',
+    
     'accounts',
     'django.contrib.sites',
     'django.contrib.flatpages',
@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.google',
     'appointments.apps.AppointmentsConfig',
     'django_apscheduler',
+    'news.apps.NewsConfig',
     
 ]
 
