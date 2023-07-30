@@ -1,6 +1,7 @@
 from django import forms
-from .models import Post, Category
+from .models import Post, Category, Subscribers
 from django.forms.widgets import CheckboxSelectMultiple
+
 
 class PostForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -15,9 +16,8 @@ class PostForm(forms.ModelForm):
             'text': forms.Textarea(attrs={'cols': 120, 'rows': 8}),
         }
 
-class SubscribeForm(forms.Form):
-    categories = forms.ModelMultipleChoiceField(
-        queryset=Category.objects.all(),
-        widget=CheckboxSelectMultiple,
+class SubscribeForm(forms.ModelForm):
+    class Meta:
+        model = Subscribers
+        fields = ['category']
 
-    )

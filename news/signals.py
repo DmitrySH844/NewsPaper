@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import m2m_changed
 from django.dispatch import receiver
 
-from news.models import Post
+from news.models import Post, Subscribers
 from news.utilits import mail_notify_new_post
 
 

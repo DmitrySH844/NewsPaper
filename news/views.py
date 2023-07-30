@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView, RedirectView, CreateView, UpdateView, DeleteView, TemplateView
 from .models import Post, Category
-from .filters import PostFilter, CategoryFilter, WeeklyPostFilter
+from .filters import PostFilter, CategoryFilter
 from django.urls import reverse_lazy
 from .forms import PostForm, SubscribeForm
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
@@ -71,33 +71,21 @@ class PostDelete(DeleteView):
     success_url = reverse_lazy('posts_lst')
     pk_url_kwarg = "pk"
 
-class SubscribeView(TemplateView):
+class SubscribeView(CreateView):
     model = Category
     form_class = SubscribeForm
     template_name = 'subscribe.html'
     context_object_name = 'subscribe'
+    success_url = reverse_lazy('subscribe')
 
-    def get_queryset(self):
-        queryset = super().get_queryset()
-        self.filterset = CategoryFilter(self.request.GET, queryset)
-        return self.filterset.qs
+    def form_valid (self, form):
+        subscriber = form.save(commit=False)
+        form.instance.user = self.request.user
+        subscriber.save()
+        return super().form_valid(form)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        filterset = CategoryFilter(self.request.GET, queryset=Category.objects.all())
-        context['filterset'] = filterset
-        return context
-
-    def get(self, request):
-        form = self.form_class()
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            return redirect('../')
-        return render(request, self.template_name, {'form': form})
-
+    
+    
 class WeeklyPostsView(ListView):
     model = Post
     template_name = 'weekly_digest_mail.html'
@@ -115,3 +103,7 @@ class WeeklyPostsView(ListView):
         context = super().get_context_data(**kwargs)
         context['filterset'] = self.filterset
         return context
+    
+
+
+
