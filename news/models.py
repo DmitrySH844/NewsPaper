@@ -30,6 +30,7 @@ class Author(models.Model):
 
 class Category(models.Model):
     name_category = models.CharField(max_length=255, unique=True)
+    
 
     def __str__(self):
         return self.name_category
@@ -38,6 +39,7 @@ class Category(models.Model):
 
 class Post(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
+    
 
     CHOICES = [
         ('Article', (
@@ -107,8 +109,8 @@ class Comment(models.Model):
         self.save()
 
 class Subscribers(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, )
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, )
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return f'{self.user}: {self.category}'
