@@ -18,7 +18,7 @@ def notify(post_id):
         subject = f'Новый пост в категориях "{", ".join([str(category) for category in categories])}"'
         message = f'Появился новый пост в категориях "{", ".join([str(category) for category in categories])}"\n{post.content[:50]}'
         html = render_to_string('news_email.html', {'post': post})
-        from_email = 'Pupapekainos@yandex.com'
+        from_email = 'ivan0v.dmitro@yandex.ru'
         msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
         msg.attach_alternative(html, "text/html")
         msg.send()
