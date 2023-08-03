@@ -4,6 +4,12 @@ from django.forms.widgets import CheckboxSelectMultiple
 
 
 class PostForm(forms.ModelForm):
+    category = forms.ModelMultipleChoiceField(
+        label='Category',
+        queryset=Category.objects.all(),
+        widget=forms.CheckboxSelectMultiple
+    )
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['text_type'].help_text = 'Please select post category'
