@@ -1,10 +1,11 @@
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver 
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from .models import Post, Subscribers
 from NewsPaper import settings
 from django.template.loader import render_to_string
 from django.contrib.auth.models import User
+from django.utils.html import strip_tags
  
 
 @receiver(m2m_changed, sender=Post.category.through) 
@@ -17,12 +18,16 @@ def notify_for_subscriber(sender, instance, action, pk_set, **kwargs):
         if email_list:
             for email in email_list:
                 subject = f"Вышла новая публикация в категории {post_categories_name}."
-                message = render_to_string('new_post.html', {'post': instance})
-                send_mail(
-                                subject=subject,
-                                message=message,
+                html_content = render_to_string('new_post.html', {'post': instance})
+                text_content = strip_tags(html_content)
+                msg=EmailMultiAlternatives(
+                                subject,
+                                text_content,
                                 from_email=settings.EMAIL_HOST_USER,
-                                recipient_list=[email]
+                                to = [email]
                             )
+                msg.attach_alternative(html_content, "text/html")
+                msg.send()
+
 
 
