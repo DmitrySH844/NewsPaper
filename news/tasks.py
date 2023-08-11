@@ -1,27 +1,14 @@
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from .models import User, Post, Category
+from .models import User, Post, Subscribers
 from celery import shared_task
 from django.urls import reverse_lazy
+from NewsPaper import settings
+from django.contrib.auth.models import User
+from django.utils.html import strip_tags
+from datetime import datetime, timedelta
 
 
-@shared_task
-def notify(post_id):
-    post = Post.objects.get(id=post_id)
-    categories = post.category.all()
-    recipient_list = []
-    for category in categories:
-        subscribers = category.subscribers.all()
-        recipient_list += [user.email for user in subscribers]
-
-    if recipient_list:
-        subject = f'Новый пост в категориях "{", ".join([str(category) for category in categories])}"'
-        message = f'Появился новый пост в категориях "{", ".join([str(category) for category in categories])}"\n{post.content[:50]}'
-        html = render_to_string('new_post.html', {'post': post})
-        from_email = 'ivan0v.dmitro@yandex.ru'
-        msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
-        msg.attach_alternative(html, "text/html")
-        msg.send()
 
 
 @shared_task
@@ -34,9 +21,37 @@ def weekly_notify():
         if queryset.exists():
             subject = f'Еженедельный дайджест'
             message = f'Список новостей за прошедшую неделю'
-            from_email = 'Pupapekainos@yandex.com'
+            from_email = 'ivan0v.dmitro@yandex.ru'
             context = {'posts': queryset, 'request': None, 'filter': WeeklyPostsView().filterset_class}  # pass the posts and request object to the email template context
-            html_content = render_to_string('weekly_posts_email.html', context)
-            msg = EmailMultiAlternatives(subject, message, from_email, recipient_list)
+            html_content = render_to_string('weekly_post.html', context)
+            text_content = strip_tags(html_content)
+            msg = EmailMultiAlternatives(subject, text_content, from_email=settings.EMAIL_HOST_USER, recipient_list)
+            msg.attach_alternative(html_content, "text/html")
+            msg.send()
+
+
+@shared_task
+def weekly_send_mail():
+    today = datetime.today()  # сегодня
+    week_ago = today - timedelta(days=7)  # дата неделю назад
+    # находим почту всех пользователей имеющих подписки
+    email_list = Subscribers.objects.values_list('user__email', flat=True).distinct()
+    for email in email_list:
+        # находим для все категории на которые подписан данный user
+        user_subscribed_categories = Subscribers.objects.filter(user__email=email).values_list('category',
+                                                                                                     flat=True)
+        posts_list = Post.objects.filter(category__in=user_subscribed_categories, date__gte=week_ago)
+        categories_names = Category.objects.filter(id__in=user_subscribed_categories).values_list('category_name',
+                                                                                                  flat=True)
+        if posts_list:
+            subject = f'Еженедельная подборка новых публикаций.'
+            html_content = render_to_string('weekly_post.html', {'post': instance})
+            text_content = strip_tags(html_content)
+            msg=EmailMultiAlternatives(
+                                subject,
+                                text_content,
+                                from_email=settings.EMAIL_HOST_USER,
+                                to = [email]
+                            )
             msg.attach_alternative(html_content, "text/html")
             msg.send()

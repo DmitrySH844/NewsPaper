@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Еженедельная подборка новых публикаций</title>
+</head>
+<body>
+    <h5>
+    За прошедшую неделю были опубликованы несколько постов в категория, на которые Вы подписаны:
+    {% for name in categories_names %}
+        {{ name }},
+    {% endfor %}
+    </h5>
+    {% for post in posts %}
+        <p> <a href="/{{ post.id }}/">
+            {{ post.post_category }} в категории {{ post.category.category_name }}.
+            Заголовок: {{ post.headline }}. Превью:{{ post.text|truncatechars:15 }}</a>
+        </p>
+    {% endfor %}
+</body>
+</html>

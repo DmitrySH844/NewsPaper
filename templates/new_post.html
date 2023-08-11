@@ -15,6 +15,6 @@
     <p> Заголовок: {{ post.title }}</p>
     <p> Превью:{{ post.text|truncatechars:15 }}</p>
 
-    <p> Перейти к статье можно по <a href="/{{ post.pk }}/">ссылке</a>.</p>
+    <p> Перейти к статье можно по <a href="{% url 'post_detail' pk=post.pk %}">ссылке</a>.</p>
 </body>
 </html>
