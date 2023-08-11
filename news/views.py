@@ -1,6 +1,6 @@
 from django.views.generic import ListView, DetailView, RedirectView, CreateView, UpdateView, DeleteView, TemplateView
 from .models import Post, Category
-from .filters import PostFilter, CategoryFilter
+from .filters import PostFilter, CategoryFilter, WeeklyPostFilter
 from django.urls import reverse_lazy
 from .forms import PostForm, SubscribeForm
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
@@ -88,7 +88,7 @@ class SubscribeView(CreateView):
     
 class WeeklyPostsView(ListView):
     model = Post
-    template_name = 'weekly_digest_mail.html'
+    template_name = 'weekly_post.html'
     context_object_name = 'posts'
 
     # success_url = reverse_lazy('posts_list')

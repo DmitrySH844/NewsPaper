@@ -1,33 +1,12 @@
 from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
-from .models import User, Post, Subscribers
+from .models import User, Post, Subscribers, Category 
 from celery import shared_task
 from django.urls import reverse_lazy
 from NewsPaper import settings
 from django.contrib.auth.models import User
 from django.utils.html import strip_tags
 from datetime import datetime, timedelta
-
-
-
-
-@shared_task
-def weekly_notify():
-    from .views import WeeklyPostsView
-    recipient_list = User.objects.values_list('email', flat=True)  # список емейлов всех пользователей
-
-    if recipient_list:  # рассылка отправляется только если есть хотя бы один адресат
-        queryset = WeeklyPostsView().get_queryset()  # get the queryset for the view
-        if queryset.exists():
-            subject = f'Еженедельный дайджест'
-            message = f'Список новостей за прошедшую неделю'
-            from_email = 'ivan0v.dmitro@yandex.ru'
-            context = {'posts': queryset, 'request': None, 'filter': WeeklyPostsView().filterset_class}  # pass the posts and request object to the email template context
-            html_content = render_to_string('weekly_post.html', context)
-            text_content = strip_tags(html_content)
-            msg = EmailMultiAlternatives(subject, text_content, from_email=settings.EMAIL_HOST_USER, recipient_list)
-            msg.attach_alternative(html_content, "text/html")
-            msg.send()
 
 
 @shared_task
@@ -45,7 +24,7 @@ def weekly_send_mail():
                                                                                                   flat=True)
         if posts_list:
             subject = f'Еженедельная подборка новых публикаций.'
-            html_content = render_to_string('weekly_post.html', {'post': instance})
+            html_content = render_to_string('weekly_post.html', {'posts': posts_list, 'categories_names': categories_names})
             text_content = strip_tags(html_content)
             msg=EmailMultiAlternatives(
                                 subject,
