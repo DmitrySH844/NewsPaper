@@ -1,0 +1,26 @@
+import os
+from celery import Celery
+from celery.schedules import crontab
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'NewsPaper.settings')
+
+app = Celery('NewsPaper')
+app.config_from_object('django.conf:settings', namespace='CELERY')
+
+app.autodiscover_tasks()
+
+app.conf.beat_schedule = {
+    'weekly_send_mail': {
+        'task': 'news.tasks.weekly_send_mail',
+        'schedule': crontab(hour='8', day_of_week='sunday'),
+        'args': (),
+    },
+}
+
+app.conf.beat_schedule = {
+    'new_post_mail': {
+        'task': 'news.tasks.new_post_mail',
+        'schedule': 5,
+        'args': (),
+    },
+}
