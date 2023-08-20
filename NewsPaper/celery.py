@@ -17,10 +17,10 @@ app.conf.beat_schedule = {
     },
 }
 
-app.conf.beat_schedule = {
-    'new_post_mail': {
-        'task': 'news.tasks.new_post_mail',
-        'schedule': 5,
-        'args': (),
-    },
-}
+#app.conf.beat_schedule = {
+    #'new_post_mail': {
+        #'task': 'news.tasks.new_post_mail',
+        #'schedule': 5,
+        #'args': (),
+    #},
+#}
